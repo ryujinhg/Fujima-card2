@@ -1,0 +1,22 @@
+{
+  "name": "野球カード作成アプリ",
+  "short_name": "野球カード",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6b7280",
+  "icons": [
+    {
+      "src": "icon_s.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon_l.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}
