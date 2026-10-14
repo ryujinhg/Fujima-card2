@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>野球カード作成アプリ９</title>
+    <title>野球カード作成アプリ10</title>
     <link id="favicon-link" rel="icon" type="image/png" href="">
     <link id="apple-icon-link" rel="apple-touch-icon" href="">
     <link rel="manifest" href="manifest.json">
@@ -1128,21 +1128,19 @@ document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
 
     // ag-psd が確実に読み込めるレイヤー構造（上から順：テンプレート、カード画像）
     const psdData = {
-        width: width,
-        height: height,
-        channels: 3,
-        bitsPerChannel: 8,
-        children: [
-            {
-                name: 'テンプレート',
-                imageData: templateImgData
-            },
-            {
-                name: 'カード画像',
-                imageData: cardImgData
-            }
-        ]
-    };
+	    width: width,
+	    height: height,
+	    children: [
+	        {
+	            name: 'テンプレート',
+	            canvas: templateCanvas
+	        },
+	        {
+	            name: 'カード画像',
+	            canvas: cardCanvas
+	        }
+	    ]
+	};
 
     try {
         const buffer = psdWriter(psdData);
@@ -1204,30 +1202,20 @@ document.getElementById('downloadBackPsdBtn').addEventListener('click', () => {
     const templateImgData = templateCtx.getImageData(0, 0, width, height);
 
     // ag-psd が確実に読み込めるレイヤー構造
-    const psdData = {
-        width: width,
-        height: height,
-        channels: 3,
-        bitsPerChannel: 8,
-        children: [
-            {
-                name: 'テンプレート',
-                canvas: {
-                    width: width,
-                    height: height,
-                    data: templateImgData.data
-                }
-            },
-            {
-                name: 'カード画像',
-                canvas: {
-                    width: width,
-                    height: height,
-                    data: cardImgData.data
-                }
-            }
-        ]
-    };
+	const psdData = {
+	    width: width,
+	    height: height,
+	    children: [
+	        {
+	            name: 'テンプレート',
+	            canvas: templateCanvas
+	        },
+	        {
+	            name: 'カード画像',
+	            canvas: cardCanvas
+	        }
+	    ]
+	};
 
     try {
         const buffer = psdWriter(psdData);
