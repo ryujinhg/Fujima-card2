@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>野球カード作成アプリ６</title>
+    <title>野球カード作成アプリ７</title>
     <link id="favicon-link" rel="icon" type="image/png" href="">
     <link id="apple-icon-link" rel="apple-touch-icon" href="">
     <link rel="manifest" href="manifest.json">
@@ -1101,7 +1101,7 @@ document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
     const width = 915;
     const height = 1259;
 
-    // ① カード画像レイヤー（895x1239）を一度画面外のキャンバスに書き込み
+    // ① カード画像レイヤー（下層用）
     const cardCanvas = document.createElement('canvas');
     cardCanvas.width = width;
     cardCanvas.height = height;
@@ -1113,8 +1113,9 @@ document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
     cardCtx.scale(scale, scale);
     drawFrontCardForZeamigoods(cardCtx);
     cardCtx.restore();
+    const cardImgData = cardCtx.getImageData(0, 0, width, height);
 
-    // ② テンプレート画像レイヤー（915x1259）
+    // ② テンプレート画像レイヤー（上層用）
     const templateCanvas = document.createElement('canvas');
     templateCanvas.width = width;
     templateCanvas.height = height;
@@ -1123,29 +1124,32 @@ document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
     if (sharedTemplateImg && sharedTemplateImg.complete && sharedTemplateImg.src.length > 10) {
         templateCtx.drawImage(sharedTemplateImg, 0, 0, width, height);
     }
+    const templateImgData = templateCtx.getImageData(0, 0, width, height);
 
-    // ag-psd に渡すレイヤー配列の構築
-    const layers = [
-        {
-            name: 'カード画像',
-            imageData: cardCtx.getImageData(0, 0, width, height)
-        }
-    ];
-
-    // テンプレート画像が存在する場合のみ上層レイヤーに追加
-    if (sharedTemplateImg && sharedTemplateImg.src.length > 10) {
-        layers.push({
-            name: 'テンプレート',
-            imageData: templateCtx.getImageData(0, 0, width, height)
-        });
-    }
-
+    // ag-psd が確実に読み込めるレイヤー構造（上から順：テンプレート、カード画像）
     const psdData = {
         width: width,
         height: height,
-        channels: 4,
+        channels: 3,
         bitsPerChannel: 8,
-        layers: layers
+        layers: [
+            {
+                name: 'テンプレート',
+                canvas: {
+                    width: width,
+                    height: height,
+                    data: templateImgData.data
+                }
+            },
+            {
+                name: 'カード画像',
+                canvas: {
+                    width: width,
+                    height: height,
+                    data: cardImgData.data
+                }
+            }
+        ]
     };
 
     try {
@@ -1182,7 +1186,7 @@ document.getElementById('downloadBackPsdBtn').addEventListener('click', () => {
     const width = 915;
     const height = 1259;
 
-    // ① カード画像レイヤー（895x1239）
+    // ① カード画像レイヤー（下層用）
     const cardCanvas = document.createElement('canvas');
     cardCanvas.width = width;
     cardCanvas.height = height;
@@ -1194,8 +1198,9 @@ document.getElementById('downloadBackPsdBtn').addEventListener('click', () => {
     cardCtx.scale(scale, scale);
     drawBackCardForZeamigoods(cardCtx);
     cardCtx.restore();
+    const cardImgData = cardCtx.getImageData(0, 0, width, height);
 
-    // ② テンプレート画像レイヤー（915x1259）
+    // ② テンプレート画像レイヤー（上層用）
     const templateCanvas = document.createElement('canvas');
     templateCanvas.width = width;
     templateCanvas.height = height;
@@ -1204,28 +1209,32 @@ document.getElementById('downloadBackPsdBtn').addEventListener('click', () => {
     if (sharedTemplateImg && sharedTemplateImg.complete && sharedTemplateImg.src.length > 10) {
         templateCtx.drawImage(sharedTemplateImg, 0, 0, width, height);
     }
+    const templateImgData = templateCtx.getImageData(0, 0, width, height);
 
-    // ag-psd に渡すレイヤー配列の構築
-    const layers = [
-        {
-            name: 'カード画像',
-            imageData: cardCtx.getImageData(0, 0, width, height)
-        }
-    ];
-
-    if (sharedTemplateImg && sharedTemplateImg.src.length > 10) {
-        layers.push({
-            name: 'テンプレート',
-            imageData: templateCtx.getImageData(0, 0, width, height)
-        });
-    }
-
+    // ag-psd が確実に読み込めるレイヤー構造
     const psdData = {
         width: width,
         height: height,
-        channels: 4,
+        channels: 3,
         bitsPerChannel: 8,
-        layers: layers
+        layers: [
+            {
+                name: 'テンプレート',
+                canvas: {
+                    width: width,
+                    height: height,
+                    data: templateImgData.data
+                }
+            },
+            {
+                name: 'カード画像',
+                canvas: {
+                    width: width,
+                    height: height,
+                    data: cardImgData.data
+                }
+            }
+        ]
     };
 
     try {
