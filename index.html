@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>野球カード作成アプリ５</title>
+    <title>野球カード作成アプリ６</title>
     <link id="favicon-link" rel="icon" type="image/png" href="">
     <link id="apple-icon-link" rel="apple-touch-icon" href="">
     <link rel="manifest" href="manifest.json">
@@ -1101,44 +1101,51 @@ document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
     const width = 915;
     const height = 1259;
 
-    // ① すでに画面のプレビューで完璧に描画されている #frontCanvas を取得する
-    const frontCanvas = document.getElementById('frontCanvas');
-    if (!frontCanvas || frontCanvas.width === 0) {
-        alert('カードのプレビューがまだ生成されていません。');
-        return;
+    // ① カード画像レイヤー（895x1239）を一度画面外のキャンバスに書き込み
+    const cardCanvas = document.createElement('canvas');
+    cardCanvas.width = width;
+    cardCanvas.height = height;
+    const cardCtx = cardCanvas.getContext('2d');
+
+    cardCtx.save();
+    cardCtx.translate(9, 3);
+    const scale = 897 / 1575;
+    cardCtx.scale(scale, scale);
+    drawFrontCardForZeamigoods(cardCtx);
+    cardCtx.restore();
+
+    // ② テンプレート画像レイヤー（915x1259）
+    const templateCanvas = document.createElement('canvas');
+    templateCanvas.width = width;
+    templateCanvas.height = height;
+    const templateCtx = templateCanvas.getContext('2d');
+    
+    if (sharedTemplateImg && sharedTemplateImg.complete && sharedTemplateImg.src.length > 10) {
+        templateCtx.drawImage(sharedTemplateImg, 0, 0, width, height);
     }
 
-    // レイヤー1（下層）：915x1259のキャンバスを作り、中にプレビュー画像を綺麗に収めて配置する
-    const cardLayerCanvas = document.createElement('canvas');
-    cardLayerCanvas.width = width;
-    cardLayerCanvas.height = height;
-    const cardCtx = cardLayerCanvas.getContext('2d');
-    
-    const cardW = 895;
-    const cardH = 1239;
-    const cardX = (width - cardW) / 2;
-    const cardY = (height - cardH) / 2;
-    
-    // 画面上の完璧な描画結果を、PSD用のレイヤーサイズに合わせて描き込む
-    cardCtx.drawImage(frontCanvas, cardX, cardY, cardW, cardH);
+    // ag-psd に渡すレイヤー配列の構築
+    const layers = [
+        {
+            name: 'カード画像',
+            imageData: cardCtx.getImageData(0, 0, width, height)
+        }
+    ];
 
-    // レイヤー2（上層）：915x1259の共通テンプレート画像
-    const templateLayerCanvas = document.createElement('canvas');
-    templateLayerCanvas.width = width;
-    templateLayerCanvas.height = height;
-    if (sharedTemplateImg && sharedTemplateImg.complete && sharedTemplateImg.src.length > 10) {
-        templateLayerCanvas.getContext('2d').drawImage(sharedTemplateImg, 0, 0, width, height);
+    // テンプレート画像が存在する場合のみ上層レイヤーに追加
+    if (sharedTemplateImg && sharedTemplateImg.src.length > 10) {
+        layers.push({
+            name: 'テンプレート',
+            imageData: templateCtx.getImageData(0, 0, width, height)
+        });
     }
 
     const psdData = {
         width: width,
         height: height,
-        channels: 3,
+        channels: 4,
         bitsPerChannel: 8,
-        layers: [
-            { name: 'テンプレート', canvas: templateLayerCanvas },
-            { name: 'カード画像', canvas: cardLayerCanvas }
-        ]
+        layers: layers
     };
 
     try {
@@ -1159,10 +1166,15 @@ document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
         alert('PSDファイルの生成に失敗しました。');
     }
 });
-
-// 裏面PSD保存（2層：下層＝895x1239カード、上層＝915x1259共通テンプレート）
+	
+// 裏面PSD保存（2層：下層＝カード画像、上層＝共通テンプレート）
 document.getElementById('downloadBackPsdBtn').addEventListener('click', () => {
-    if (typeof agPsd === 'undefined') {
+    if (typeof writePsd === 'undefined' && typeof agPsd === 'undefined') {
+        alert('PSDライブラリが読み込まれていません。');
+        return;
+    }
+    const psdWriter = typeof writePsd !== 'undefined' ? writePsd : (window.agPsd ? window.agPsd.writePsd : null);
+    if (!psdWriter) {
         alert('PSDライブラリが読み込まれていません。');
         return;
     }
@@ -1170,45 +1182,54 @@ document.getElementById('downloadBackPsdBtn').addEventListener('click', () => {
     const width = 915;
     const height = 1259;
 
-    // レイヤー1（下層）：895x1239の大きさに調整したカード画像
-    const cardLayerCanvas = document.createElement('canvas');
-    cardLayerCanvas.width = width;
-    cardLayerCanvas.height = height;
-    const cardCtx = cardLayerCanvas.getContext('2d');
-    
-    const cardW = 895;
-    const cardH = 1239;
-    const cardX = (width - cardW) / 2;
-    const cardY = (height - cardH) / 2;
-    
+    // ① カード画像レイヤー（895x1239）
+    const cardCanvas = document.createElement('canvas');
+    cardCanvas.width = width;
+    cardCanvas.height = height;
+    const cardCtx = cardCanvas.getContext('2d');
+
     cardCtx.save();
-    cardCtx.translate(cardX, cardY);
-    const scale = cardW / 1575;
+    cardCtx.translate(9, 3);
+    const scale = 897 / 1575;
     cardCtx.scale(scale, scale);
     drawBackCardForZeamigoods(cardCtx);
     cardCtx.restore();
 
-    // レイヤー2（上層）：915x1259の共通テンプレート画像
-    const templateLayerCanvas = document.createElement('canvas');
-    templateLayerCanvas.width = width;
-    templateLayerCanvas.height = height;
+    // ② テンプレート画像レイヤー（915x1259）
+    const templateCanvas = document.createElement('canvas');
+    templateCanvas.width = width;
+    templateCanvas.height = height;
+    const templateCtx = templateCanvas.getContext('2d');
+    
     if (sharedTemplateImg && sharedTemplateImg.complete && sharedTemplateImg.src.length > 10) {
-        templateLayerCanvas.getContext('2d').drawImage(sharedTemplateImg, 0, 0, width, height);
+        templateCtx.drawImage(sharedTemplateImg, 0, 0, width, height);
+    }
+
+    // ag-psd に渡すレイヤー配列の構築
+    const layers = [
+        {
+            name: 'カード画像',
+            imageData: cardCtx.getImageData(0, 0, width, height)
+        }
+    ];
+
+    if (sharedTemplateImg && sharedTemplateImg.src.length > 10) {
+        layers.push({
+            name: 'テンプレート',
+            imageData: templateCtx.getImageData(0, 0, width, height)
+        });
     }
 
     const psdData = {
         width: width,
         height: height,
-        channels: 3,
+        channels: 4,
         bitsPerChannel: 8,
-        layers: [
-            { name: 'テンプレート', canvas: templateLayerCanvas },
-            { name: 'カード画像', canvas: cardLayerCanvas }
-        ]
+        layers: layers
     };
 
     try {
-		const buffer = agPsd.writePsd(psdData);
+        const buffer = psdWriter(psdData);
         const blob = new Blob([buffer], { type: 'image/vnd.adobe.photoshop' });
         const url = URL.createObjectURL(blob);
         
