@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>野球カード作成アプリ３</title>
+    <title>野球カード作成アプリ４</title>
     <link id="favicon-link" rel="icon" type="image/png" href="">
     <link id="apple-icon-link" rel="apple-touch-icon" href="">
     <link rel="manifest" href="manifest.json">
@@ -1141,7 +1141,7 @@ document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
     };
 
     try {
-        const buffer = agPsd.writePsdToBuffer(psdData);
+		const buffer = agPsd.writePsd(psdData);
         const blob = new Blob([buffer], { type: 'image/vnd.adobe.photoshop' });
         const url = URL.createObjectURL(blob);
         
@@ -1207,7 +1207,7 @@ document.getElementById('downloadBackPsdBtn').addEventListener('click', () => {
     };
 
     try {
-        const buffer = agPsd.writePsdToBuffer(psdData);
+		const buffer = agPsd.writePsd(psdData);
         const blob = new Blob([buffer], { type: 'image/vnd.adobe.photoshop' });
         const url = URL.createObjectURL(blob);
         
