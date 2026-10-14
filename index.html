@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>野球カード作成アプリ１</title>
+    <title>野球カード作成アプリ２</title>
     <link id="favicon-link" rel="icon" type="image/png" href="">
     <link id="apple-icon-link" rel="apple-touch-icon" href="">
     <link rel="manifest" href="manifest.json">
@@ -1088,7 +1088,14 @@ sharedTemplateImg.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA5MAAATrE
 
 // 表面PSD保存（2層：下層＝895x1239カード、上層＝915x1259共通テンプレート）
 document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
-    if (typeof agPsd === 'undefined') {
+    // 実際にag-psdが提供する書き出し関数（writePsd）があるかどうかで判定する
+    if (typeof writePsd === 'undefined' && typeof agPsd === 'undefined') {
+        alert('PSDライブラリが読み込まれていません。');
+        return;
+    }
+    // writePsd があれば、変数名がグローバルに直接生えているパターンに合わせる
+    const psdWriter = typeof writePsd !== 'undefined' ? writePsd : (window.agPsd ? window.agPsd.writePsd : null);
+    if (!psdWriter) {
         alert('PSDライブラリが読み込まれていません。');
         return;
     }
