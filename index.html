@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>野球カード作成アプリ13</title>
+    <title>野球カード作成アプリ14</title>
     <link id="favicon-link" rel="icon" type="image/png" href="">
     <link id="apple-icon-link" rel="apple-touch-icon" href="">
     <link rel="manifest" href="manifest.json">
@@ -339,10 +339,9 @@
             <label class="color-picker-label">🖌️ フチ色: <input type="color" id="kanjiStrokeColorInput" value="#000000"></label>
         </div>
         <button id="downloadCombinedBtnFront" class="btn btn-main btn-combined-main" disabled>LAWSONシールL判用で保存する </button>
-        
+        <button id="downloadFrontPsdBtn" class="btn btn-psd" disabled>📦 Zeami_Goods用で保存する</button>        
         <div class="bottom-btn-group">
             <button class="btn btn-back-menu" onclick="showScreen('menuScreen')">⬅️ メニュー</button>
-            <button id="downloadFrontPsdBtn" class="btn btn-psd" disabled>📦 用PSD</button>
             <button id="downloadFrontBtn" class="btn btn-download" disabled>📥 表面保存</button>
         </div>
     </div>
@@ -391,10 +390,9 @@
         <label>✨ 座右の銘</label><input type="text" id="backMotto" value="" placeholder="好きな言葉や目標など">
         <label>💭 一番の思い出</label><textarea id="backMemory" placeholder=""></textarea>
         <button class="btn btn-main btn-front-main" onclick="showScreen('frontScreen')">表面を作成</button>
-        
+		<button id="downloadBackPsdBtn" class="btn btn-psd" disabled>📦 Zeami_Goods用で保存する</button>
         <div class="bottom-btn-group">
             <button class="btn btn-back-menu" onclick="showScreen('menuScreen')">⬅️ メニュー</button>
-            <button id="downloadBackPsdBtn" class="btn btn-psd" disabled>📦 用PSD</button>
             <button id="downloadBackBtn" class="btn btn-download" disabled>📥 裏面保存</button>
         </div>
     </div>
