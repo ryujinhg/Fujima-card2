@@ -318,7 +318,7 @@
             <p>最終的には、ローソンかファミリーマートのマルチコピー機でシールを作るためのアプリです。</p>
             <p>藤間中学校に特化していて、チームロゴが初めから入っていますが、画像があれば他のチームのカードも出来ます。</p>
             <p>「表面を保存」「裏面を保存」のボタンを押して保存される画像は、
-                <a href="https://zeamigoods.com/product/59" target="_blank" style="color: #4169E1; font-weight: bold; text-decoration: underline;">ZEAMI Goods</a> という「カードを激安で作れるサイト」の画像形式およびサイズにピッタリ合わせています。</p>
+                <a href="https://.com/product/59" target="_blank" style="color: #4169E1; font-weight: bold; text-decoration: underline;">ZEAMI Goods</a> という「カードを激安で作れるサイト」の画像形式およびサイズにピッタリ合わせています。</p>
         </div>
     </div>
 </div>
@@ -342,7 +342,7 @@
         
         <div class="bottom-btn-group">
             <button class="btn btn-back-menu" onclick="showScreen('menuScreen')">⬅️ メニュー</button>
-            <button id="downloadFrontPsdBtn" class="btn btn-psd" disabled>📦 zeamigoods用PSD</button>
+            <button id="downloadFrontPsdBtn" class="btn btn-psd" disabled>📦 用PSD</button>
             <button id="downloadFrontBtn" class="btn btn-download" disabled>📥 表面保存</button>
         </div>
     </div>
@@ -394,7 +394,7 @@
         
         <div class="bottom-btn-group">
             <button class="btn btn-back-menu" onclick="showScreen('menuScreen')">⬅️ メニュー</button>
-            <button id="downloadBackPsdBtn" class="btn btn-psd" disabled>📦 zeamigoods用PSD</button>
+            <button id="downloadBackPsdBtn" class="btn btn-psd" disabled>📦 用PSD</button>
             <button id="downloadBackBtn" class="btn btn-download" disabled>📥 裏面保存</button>
         </div>
     </div>
@@ -1107,12 +1107,11 @@ document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
     cardCanvas.height = height;
     const cardCtx = cardCanvas.getContext('2d');
 
-    cardCtx.save();
-    cardCtx.translate(9, 3);
-    const scale = 897 / 1575;
-    cardCtx.scale(scale, scale);
-    drawFrontCardForZeamigoods(cardCtx);
-    cardCtx.restore();
+	cardCtx.save();
+	cardCtx.translate(10, 10);
+	cardCtx.scale(895 / 1575, 1239 / 2178);
+	drawFrontCardForZeamigoods(cardCtx);
+	cardCtx.restore();
     const cardImgData = cardCtx.getImageData(0, 0, width, height);
 
     // ② テンプレート画像レイヤー（上層用）
@@ -1182,12 +1181,11 @@ document.getElementById('downloadBackPsdBtn').addEventListener('click', () => {
     cardCanvas.height = height;
     const cardCtx = cardCanvas.getContext('2d');
 
-    cardCtx.save();
-    cardCtx.translate(9, 3);
-    const scale = 897 / 1575;
-    cardCtx.scale(scale, scale);
-    drawBackCardForZeamigoods(cardCtx);
-    cardCtx.restore();
+	cardCtx.save();
+	cardCtx.translate(10, 10);
+	cardCtx.scale(895 / 1575, 1239 / 2178);
+	drawBackCardForZeamigoods(cardCtx);
+	cardCtx.restore();
     const cardImgData = cardCtx.getImageData(0, 0, width, height);
 
     // ② テンプレート画像レイヤー（上層用）
