@@ -355,7 +355,7 @@
             <label for="backFaceInput" id="backFaceBtn" class="btn">📷 顔写真を選択</label>
         </div>
         <label>カードタイトル</label>
-        <input type="text" id="backTitle" value="藤間中学校野球部選手カード2026" placeholder="例: 藤間中学校野球部選手カード2026">
+        <input type="text" id="" value="藤間中学校野球部選手カード2026" placeholder="例: 藤間中学校野球部選手カード2026">
         <div class="form-row">
             <div class="form-group">
                 <label>1. 名前</label>
@@ -640,7 +640,7 @@ const bgImg = new Image();
 bgImg.src = "images/back-background.png"; 
 bgImg.onload = () => drawBackCard();
 
-const backInputs = ['backTitle', 'back1', 'back2', 'back3', 'back5', 'back4', 'backMotto', 'backMemory'];
+const backInputs = ['', 'back1', 'back2', 'back3', 'back5', 'back4', 'backMotto', 'backMemory'];
 backInputs.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -681,7 +681,7 @@ function drawBackCard() {
     backCtx.textBaseline = "alphabetic"; 
     backCtx.textAlign = "center";
     backCtx.font = "bold 78px sans-serif";
-    backCtx.fillText(document.getElementById('backTitle').value, centerX, 115);
+    backCtx.fillText(document.getElementById('backTitle').value, centerX, 125);
     
     backCtx.fillStyle = "#1a1a1a";
     backCtx.textAlign = "left";
