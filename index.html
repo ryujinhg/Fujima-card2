@@ -1039,6 +1039,10 @@ document.getElementById('downloadCombinedBtnFront').addEventListener('click', ()
 
 function saveBackForZeamigoods() {
     const rawName = document.getElementById('backRomanName').value.trim();
+	 if (!rawName) {
+        alert('プロフィールのローマ字の名前を入力してください。');
+        return;
+    }
     const fileName = rawName.toLowerCase().replace(/\s+/g, '_') || 'back';
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = 915;
@@ -1060,6 +1064,10 @@ function saveBackForZeamigoods() {
 
 function saveFrontForZeamigoods() {
     const rawName = document.getElementById('playerName').value.trim();
+	    if (!rawName) {
+        alert('プロフィールのローマ字の名前を入力してください。');
+        return;
+    }
     const fileName = rawName.toLowerCase().replace(/\s+/g, '_') || 'front';
     const targetW = 915;
     const targetH = 1259;
