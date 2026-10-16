@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>野球カード作成アプリ15</title>
+    <title>野球カード作成アプリ16</title>
     <link id="favicon-link" rel="icon" type="image/png" href="">
     <link id="apple-icon-link" rel="apple-touch-icon" href="">
     <link rel="manifest" href="manifest.json">
@@ -1000,11 +1000,27 @@ confirmCropBtn.addEventListener('click', () => {
 
 // --- ダウンロード保存処理群 ---
 document.getElementById('downloadFrontBtn').addEventListener('click', () => {
-    saveFrontForZeamigoods();
+    drawFrontCard();
+
+    const rawName = document.getElementById('playerName').value.trim();
+    const fileName = rawName.toLowerCase().replace(/\s+/g, '_') || 'front';
+
+    const link = document.createElement('a');
+    link.download = `${fileName}_omote.png`;
+    link.href = frontCanvas.toDataURL('image/png');
+    link.click();
 });
 
 document.getElementById('downloadBackBtn').addEventListener('click', () => {
-    saveBackForZeamigoods();
+    drawBackCard();
+
+    const rawName = document.getElementById('backRomanName').value.trim();
+    const fileName = rawName.toLowerCase().replace(/\s+/g, '_') || 'back';
+
+    const link = document.createElement('a');
+    link.download = `${fileName}_ura.png`;
+    link.href = backCanvas.toDataURL('image/png');
+    link.click();
 });
 
 document.getElementById('downloadCombinedBtnFront').addEventListener('click', () => {
