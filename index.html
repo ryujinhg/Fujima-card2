@@ -1180,7 +1180,10 @@ document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
 });
 	
 // 裏面PSD保存（2層：下層＝カード画像、上層＝共通テンプレート）
-document.getElementById('downloadBackPsdBtn').addEventListener('click', () => {
+const downloadBackPsdBtn = document.getElementById('downloadBackPsdBtn');
+
+if (downloadBackPsdBtn) {
+    downloadBackPsdBtn.addEventListener('click', () => {
     if (typeof writePsd === 'undefined' && typeof agPsd === 'undefined') {
         alert('PSDライブラリが読み込まれていません。');
         return;
@@ -1251,7 +1254,8 @@ document.getElementById('downloadBackPsdBtn').addEventListener('click', () => {
         console.error('PSD出力エラー:', e);
         alert('PSDファイルの生成に失敗しました。');
     }
-});
+    });
+}
 
 // --- フォントの強制ロード・ストレージ関連 ---
 if (document.fonts && document.fonts.load) {
