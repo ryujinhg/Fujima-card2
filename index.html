@@ -389,7 +389,7 @@
             <input type="file" id="backFaceInput" accept="image/*">
             <label for="backFaceInput" id="backFaceBtn" class="btn">📷 顔写真を選択</label>
         </div>
-        <button class="btn btn-main btn-front-main" onclick="showScreen('frontScreen')">次にすすむ</button>
+        <button class="btn btn-main btn-front-main" onclick="goToFrontScreen()">次にすすむ</button>
 		<!--<button id="downloadBackPsdBtn" class="btn btn-psd" disabled>📦 Zeami_Goods用で保存する</button>-->
         <div class="bottom-btn-group">
             <button class="btn btn-back-menu" onclick="showScreen('menuScreen')">⬅️ メニュー</button>
@@ -445,6 +445,12 @@ function showScreen(screenId) {
     document.getElementById(screenId).style.display = 'flex';
     if (screenId === 'frontScreen') drawFrontCard();
     if (screenId === 'backScreen') drawBackCard();
+// 裏面から表面へ移動するとき、ローマ字を引き継ぐ
+function goToFrontScreen() {
+    document.getElementById('playerName').value =
+        document.getElementById('backRomanName').value;
+
+    showScreen('frontScreen');	
 }
 
 const cropModal = document.getElementById('cropModal');
@@ -637,7 +643,7 @@ const backFaceBtn = document.getElementById('backFaceBtn');
 let isComposing = false;
 let backFaceImg = null; 
 const bgImg = new Image();
-// ▼▼▼【ここに裏面背景画像のBase64を入れてください】▼▼▼
+// ▼▼▼裏面背景画像】▼▼▼
 bgImg.src = "images/back-background.png"; 
 bgImg.onload = () => drawBackCard();
 
