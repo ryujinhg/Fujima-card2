@@ -1125,101 +1125,52 @@ function saveFrontForZeamigoods() {
 const sharedTemplateImg = new Image();
 sharedTemplateImg.src = "images/zeamigoods-template.png";
 
-// 表面PSD保存（2層：下層＝カード画像、上層＝共通テンプレート）
-document.getElementById('downloadFrontPsdBtn').addEventListener('click', async () => {
-    const rawName = document.getElementById('playerName').value.trim()
-        || document.getElementById('backRomanName').value.trim();
+// 表面ZEAMI Goods用PNG保存
+const downloadFrontPsdBtn = document.getElementById('downloadFrontPsdBtn');
 
-    if (!rawName) {
-        alert('ローマ字の選手名を入力してください。');
-        return;
-    }
+if (downloadFrontPsdBtn) {
+    downloadFrontPsdBtn.addEventListener('click', () => {
+        const rawName =
+            document.getElementById('playerName').value.trim() ||
+            document.getElementById('backRomanName').value.trim();
 
-    if (typeof JSZip === 'undefined') {
-        alert('ZIPライブラリが読み込まれていません。');
-        return;
-    }
-
-    const psdWriter =
-        (window.agPsd && window.agPsd.writePsd)
-            ? window.agPsd.writePsd
-            : (typeof writePsd !== 'undefined' ? writePsd : null);
-
-    if (!psdWriter) {
-        alert('PSDライブラリが読み込まれていません。');
-        return;
-    }
-
-    const fileName = rawName.toLowerCase().replace(/\s+/g, '_');
-    const width = 915;
-    const height = 1259;
-
-    // PSD用の2層データを作成する共通関数
-    function createPsdBuffer(drawCard) {
-        const cardCanvas = document.createElement('canvas');
-        cardCanvas.width = width;
-        cardCanvas.height = height;
-
-        const cardCtx = cardCanvas.getContext('2d');
-        cardCtx.save();
-        cardCtx.translate(10, 10);
-        cardCtx.scale(895 / 1575, 1227 / 2178);
-        drawCard(cardCtx);
-        cardCtx.restore();
-
-        const templateCanvas = document.createElement('canvas');
-        templateCanvas.width = width;
-        templateCanvas.height = height;
-
-        const templateCtx = templateCanvas.getContext('2d');
-
-        if (
-            sharedTemplateImg &&
-            sharedTemplateImg.complete &&
-            sharedTemplateImg.src.length > 10
-        ) {
-            templateCtx.drawImage(sharedTemplateImg, 0, 0, width, height);
+        if (!rawName) {
+            alert('選手名を入力してください。');
+            return;
         }
 
-        const psdData = {
-            width,
-            height,
-            children: [
-                { name: 'カード画像', canvas: cardCanvas },
-                { name: 'テンプレート', canvas: templateCanvas }
-            ]
-        };
+        const width = 1560;
+        const height = 2160;
 
-        return psdWriter(psdData);
-    }
+        // 描画用キャンバス（既存の座標を維持）
+        const sourceCanvas = document.createElement('canvas');
+        sourceCanvas.width = 1575;
+        sourceCanvas.height = 2200;
+        const sourceCtx = sourceCanvas.getContext('2d');
 
-    try {
-        // 表面・裏面のPSDをそれぞれ生成
-        const frontBuffer = createPsdBuffer(drawFrontCardForZeamigoods);
-        const backBuffer = createPsdBuffer(drawBackCardForZeamigoods);
+        drawFrontCardForZeamigoods(sourceCtx);
 
-        // ZIPにまとめる
-        const zip = new JSZip();
+        // 保存用キャンバス（1560 × 2160 px）
+        const outputCanvas = document.createElement('canvas');
+        outputCanvas.width = width;
+        outputCanvas.height = height;
+        const outputCtx = outputCanvas.getContext('2d');
 
-        zip.file(`${fileName}_omote.psd`, frontBuffer);
-        zip.file(`${fileName}_ura.psd`, backBuffer);
+        outputCtx.drawImage(
+            sourceCanvas,
+            0, 0, 1575, 2200,
+            0, 0, width, height
+        );
 
-        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        const fileName =
+            rawName.toLowerCase().replace(/\s+/g, '_') + '_omote.png';
 
-        const url = URL.createObjectURL(zipBlob);
         const link = document.createElement('a');
-
-        link.href = url;
-        link.download = `${fileName}_omote_ura.zip`;
+        link.href = outputCanvas.toDataURL('image/png');
+        link.download = fileName;
         link.click();
-
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-    } catch (e) {
-        console.error('表裏PSDのZIP生成エラー:', e);
-        alert('表裏PSDのZIP保存に失敗しました。詳しくはコンソールをご確認ください。');
-    }
-});
+    });
+}
 	
  // 裏面ZEAMI Goods用PNG保存
 const downloadBackPsdBtn = document.getElementById('downloadBackPsdBtn');
