@@ -461,6 +461,7 @@ function showScreen(screenId) {
     document.getElementById('menuScreen').style.display = 'none';
     document.getElementById('frontScreen').style.display = 'none';
     document.getElementById('backScreen').style.display = 'none';
+	document.getElementById('guideScreen').style.display = 'none';
     document.getElementById(screenId).style.display = 'flex';
     if (screenId === 'frontScreen') drawFrontCard();
     if (screenId === 'backScreen') drawBackCard();
