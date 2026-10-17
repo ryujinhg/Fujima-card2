@@ -1221,81 +1221,45 @@ document.getElementById('downloadFrontPsdBtn').addEventListener('click', async (
     }
 });
 	
-// 裏面PSD保存（2層：下層＝カード画像、上層＝共通テンプレート）
+ // 裏面ZEAMI Goods用PNG保存
 const downloadBackPsdBtn = document.getElementById('downloadBackPsdBtn');
 
 if (downloadBackPsdBtn) {
     downloadBackPsdBtn.addEventListener('click', () => {
-    if (typeof writePsd === 'undefined' && typeof agPsd === 'undefined') {
-        alert('PSDライブラリが読み込まれていません。');
-        return;
-    }
-    const psdWriter = typeof writePsd !== 'undefined' ? writePsd : (window.agPsd ? window.agPsd.writePsd : null);
-    if (!psdWriter) {
-        alert('PSDライブラリが読み込まれていません。');
-        return;
-    }
+        const width = 1560;
+        const height = 2160;
 
-    const width = 915;
-    const height = 1259;
+        // 描画用キャンバス（既存の座標を維持）
+        const sourceCanvas = document.createElement('canvas');
+        sourceCanvas.width = 1575;
+        sourceCanvas.height = 2200;
+        const sourceCtx = sourceCanvas.getContext('2d');
 
-    // ① カード画像レイヤー（下層用）
-    const cardCanvas = document.createElement('canvas');
-    cardCanvas.width = width;
-    cardCanvas.height = height;
-    const cardCtx = cardCanvas.getContext('2d');
+        drawBackCardForZeamigoods(sourceCtx);
 
-	cardCtx.save();
-	cardCtx.translate(10, 10);
-	cardCtx.scale(895 / 1575, 1227 / 2178);
-	drawBackCardForZeamigoods(cardCtx);
-	cardCtx.restore();
-    const cardImgData = cardCtx.getImageData(0, 0, width, height);
+        // 保存用キャンバス（1560 × 2160 px）
+        const outputCanvas = document.createElement('canvas');
+        outputCanvas.width = width;
+        outputCanvas.height = height;
+        const outputCtx = outputCanvas.getContext('2d');
 
-    // ② テンプレート画像レイヤー（上層用）
-    const templateCanvas = document.createElement('canvas');
-    templateCanvas.width = width;
-    templateCanvas.height = height;
-    const templateCtx = templateCanvas.getContext('2d');
-    
-    if (sharedTemplateImg && sharedTemplateImg.complete && sharedTemplateImg.src.length > 10) {
-        templateCtx.drawImage(sharedTemplateImg, 0, 0, width, height);
-    }
-    const templateImgData = templateCtx.getImageData(0, 0, width, height);
+        // カード全体を新しいサイズに合わせる
+        outputCtx.drawImage(
+            sourceCanvas,
+            0, 0, 1575, 2200,
+            0, 0, width, height
+        );
 
-    // ag-psd が確実に読み込めるレイヤー構造
-	const psdData = {
-	    width: width,
-	    height: height,
-		children: [
-		{
-		name: 'カード画像',
-		canvas: cardCanvas
-		},
-		{
-		name: 'テンプレート',
-		canvas: templateCanvas
-		}
-		]
-	};
-
-    try {
-        const buffer = psdWriter(psdData);
-        const blob = new Blob([buffer], { type: 'image/vnd.adobe.photoshop' });
-        const url = URL.createObjectURL(blob);
-        
+        // PNGで保存
         const rawName = document.getElementById('backRomanName').value.trim();
-        const fileName = (rawName.toLowerCase().replace(/\s+/g, '_') || 'back') + '_ura.psd';
-        
+        const fileName =
+            (rawName.toLowerCase().replace(/\s+/g, '_') || 'back') +
+            '_ura.png';
+
         const a = document.createElement('a');
-        a.href = url;
+        a.href = outputCanvas.toDataURL('image/png');
         a.download = fileName;
         a.click();
-        URL.revokeObjectURL(url);
-    } catch (e) {
-        console.error('PSD出力エラー:', e);
-        alert('PSDファイルの生成に失敗しました。');
-    }
     });
 }
 
