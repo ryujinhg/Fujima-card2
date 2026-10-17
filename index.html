@@ -423,9 +423,7 @@ function checkBothSidesReady() {
     const btnFront = document.getElementById('downloadFrontBtn');
     const btnBack = document.getElementById('downloadBackBtn');
     const btnFrontPsd = document.getElementById('downloadFrontPsdBtn');
-	/*
     const btnBackPsd = document.getElementById('downloadBackPsdBtn');
-	*/
 
     const isFrontLoaded = (typeof frontFaceImg !== 'undefined' && frontFaceImg !== null && frontFaceImg.src && frontFaceImg.src.length > 10);
     const isBackLoaded = (typeof backFaceImg !== 'undefined' && backFaceImg !== null && backFaceImg.src && backFaceImg.src.length > 10);
@@ -1182,13 +1180,11 @@ document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
 });
 	
 // 裏面PSD保存（2層：下層＝カード画像、上層＝共通テンプレート）
-/*
 document.getElementById('downloadBackPsdBtn').addEventListener('click', () => {
     if (typeof writePsd === 'undefined' && typeof agPsd === 'undefined') {
         alert('PSDライブラリが読み込まれていません。');
         return;
     }
-	*/
     const psdWriter = typeof writePsd !== 'undefined' ? writePsd : (window.agPsd ? window.agPsd.writePsd : null);
     if (!psdWriter) {
         alert('PSDライブラリが読み込まれていません。');
