@@ -445,6 +445,7 @@ function showScreen(screenId) {
     document.getElementById(screenId).style.display = 'flex';
     if (screenId === 'frontScreen') drawFrontCard();
     if (screenId === 'backScreen') drawBackCard();
+	}
 // 裏面から表面へ移動するとき、ローマ字を引き継ぐ
 function goToFrontScreen() {
     document.getElementById('playerName').value =
