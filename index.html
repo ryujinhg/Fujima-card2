@@ -350,10 +350,6 @@
 <!--裏面画面-->
 <div class="container" id="backScreen" style="display: none;">
     <div class="panel">
-        <div style="margin-bottom: 0px;">
-            <input type="file" id="backFaceInput" accept="image/*">
-            <label for="backFaceInput" id="backFaceBtn" class="btn">📷 顔写真を選択</label>
-        </div>
         <label>カードタイトル</label>
         <input type="text" id="backTitle" value="藤間中学校野球部選手カード2026" placeholder="例: 藤間中学校野球部選手カード2026">
         <div class="form-row">
@@ -388,6 +384,10 @@
         </div>
         <label>✨ 座右の銘</label><input type="text" id="backMotto" value="" placeholder="好きな言葉や目標など">
         <label>💭 一番の思い出</label><textarea id="backMemory" placeholder=""></textarea>
+		<div style="margin-bottom: 0px;">
+            <input type="file" id="backFaceInput" accept="image/*">
+            <label for="backFaceInput" id="backFaceBtn" class="btn">📷 顔写真を選択</label>
+        </div>
         <button class="btn btn-main btn-front-main" onclick="showScreen('frontScreen')">表面を作成</button>
 		<button id="downloadBackPsdBtn" class="btn btn-psd" disabled>📦 Zeami_Goods用で保存する</button>
         <div class="bottom-btn-group">
