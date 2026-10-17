@@ -1108,76 +1108,98 @@ const sharedTemplateImg = new Image();
 sharedTemplateImg.src = "images/zeamigoods-template.png";
 
 // 表面PSD保存（2層：下層＝カード画像、上層＝共通テンプレート）
-document.getElementById('downloadFrontPsdBtn').addEventListener('click', () => {
-    if (typeof writePsd === 'undefined' && typeof agPsd === 'undefined') {
-        alert('PSDライブラリが読み込まれていません。');
+document.getElementById('downloadFrontPsdBtn').addEventListener('click', async () => {
+    const rawName = document.getElementById('playerName').value.trim()
+        || document.getElementById('backRomanName').value.trim();
+
+    if (!rawName) {
+        alert('ローマ字の選手名を入力してください。');
         return;
     }
-    const psdWriter = typeof writePsd !== 'undefined' ? writePsd : (window.agPsd ? window.agPsd.writePsd : null);
+
+    if (typeof JSZip === 'undefined') {
+        alert('ZIPライブラリが読み込まれていません。');
+        return;
+    }
+
+    const psdWriter =
+        (window.agPsd && window.agPsd.writePsd)
+            ? window.agPsd.writePsd
+            : (typeof writePsd !== 'undefined' ? writePsd : null);
+
     if (!psdWriter) {
         alert('PSDライブラリが読み込まれていません。');
         return;
     }
 
+    const fileName = rawName.toLowerCase().replace(/\s+/g, '_');
     const width = 915;
     const height = 1259;
 
-    // ① カード画像レイヤー（下層用）
-    const cardCanvas = document.createElement('canvas');
-    cardCanvas.width = width;
-    cardCanvas.height = height;
-    const cardCtx = cardCanvas.getContext('2d');
+    // PSD用の2層データを作成する共通関数
+    function createPsdBuffer(drawCard) {
+        const cardCanvas = document.createElement('canvas');
+        cardCanvas.width = width;
+        cardCanvas.height = height;
 
-	cardCtx.save();
-	cardCtx.translate(10, 10);
-	cardCtx.scale(895 / 1575, 1227 / 2178);
-	drawFrontCardForZeamigoods(cardCtx);
-	cardCtx.restore();
-    const cardImgData = cardCtx.getImageData(0, 0, width, height);
+        const cardCtx = cardCanvas.getContext('2d');
+        cardCtx.save();
+        cardCtx.translate(10, 10);
+        cardCtx.scale(895 / 1575, 1227 / 2178);
+        drawCard(cardCtx);
+        cardCtx.restore();
 
-    // ② テンプレート画像レイヤー（上層用）
-    const templateCanvas = document.createElement('canvas');
-    templateCanvas.width = width;
-    templateCanvas.height = height;
-    const templateCtx = templateCanvas.getContext('2d');
-    
-    if (sharedTemplateImg && sharedTemplateImg.complete && sharedTemplateImg.src.length > 10) {
-        templateCtx.drawImage(sharedTemplateImg, 0, 0, width, height);
+        const templateCanvas = document.createElement('canvas');
+        templateCanvas.width = width;
+        templateCanvas.height = height;
+
+        const templateCtx = templateCanvas.getContext('2d');
+
+        if (
+            sharedTemplateImg &&
+            sharedTemplateImg.complete &&
+            sharedTemplateImg.src.length > 10
+        ) {
+            templateCtx.drawImage(sharedTemplateImg, 0, 0, width, height);
+        }
+
+        const psdData = {
+            width,
+            height,
+            children: [
+                { name: 'カード画像', canvas: cardCanvas },
+                { name: 'テンプレート', canvas: templateCanvas }
+            ]
+        };
+
+        return psdWriter(psdData);
     }
-    const templateImgData = templateCtx.getImageData(0, 0, width, height);
-
-    // ag-psd が確実に読み込めるレイヤー構造（上から順：テンプレート、カード画像）
-    const psdData = {
-	    width: width,
-	    height: height,
-		children: [
-		{
-		name: 'カード画像',
-		canvas: cardCanvas
-		},
-		{
-		name: 'テンプレート',
-		canvas: templateCanvas
-		}
-		]
-	};
 
     try {
-        const buffer = psdWriter(psdData);
-        const blob = new Blob([buffer], { type: 'image/vnd.adobe.photoshop' });
-        const url = URL.createObjectURL(blob);
-        
-        const rawName = document.getElementById('playerName').value.trim();
-        const fileName = (rawName.toLowerCase().replace(/\s+/g, '_') || 'front') + '_omote.psd';
-        
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        URL.revokeObjectURL(url);
+        // 表面・裏面のPSDをそれぞれ生成
+        const frontBuffer = createPsdBuffer(drawFrontCardForZeamigoods);
+        const backBuffer = createPsdBuffer(drawBackCardForZeamigoods);
+
+        // ZIPにまとめる
+        const zip = new JSZip();
+
+        zip.file(`${fileName}_omote.psd`, frontBuffer);
+        zip.file(`${fileName}_ura.psd`, backBuffer);
+
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+
+        const url = URL.createObjectURL(zipBlob);
+        const link = document.createElement('a');
+
+        link.href = url;
+        link.download = `${fileName}_omote_ura.zip`;
+        link.click();
+
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+
     } catch (e) {
-        console.error('PSD出力エラー:', e);
-        alert('PSDファイルの生成に失敗しました。');
+        console.error('表裏PSDのZIP生成エラー:', e);
+        alert('表裏PSDのZIP保存に失敗しました。詳しくはコンソールをご確認ください。');
     }
 });
 	
