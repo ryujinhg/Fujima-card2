@@ -975,7 +975,7 @@ confirmCropBtn.addEventListener('click', () => {
         frontFaceImg = new Image();
         frontFaceImg.onload = () => {
             document.getElementById('frontFileInputLabel').style.backgroundColor = '#8c8c8c';
-            document.getElementById('frontFileInputLabel').firstChild.textContent = '📷 ① 選手画像を選択済';
+            document.getElementById('frontFileInputLabel').firstChild.textContent = '選手画像を選択済み';
             cropModal.style.display = 'none';
             isFrontReady = true; 
             drawFrontCard();
@@ -1272,7 +1272,8 @@ if ('serviceWorker' in navigator) {
 }
 
 const saveTargetIds = [
-    'playerName', 'teamKanji', 'teamEnglish', 'kanjiColorInput', 'kanjiStrokeColorInput',
+    'playerName', 'backRomanName',
+    'teamKanji', 'teamEnglish', 'kanjiColorInput', 'kanjiStrokeColorInput',
     'backTitle', 'back1', 'back2', 'back3', 'back4', 'back5', 'backMotto', 'backMemory'
 ];
 
