@@ -398,10 +398,17 @@
                 <label>5. 推しキャラ</label>
                 <input type="text" id="back4" value="" placeholder="例: 推せる～">
             </div>
-            <div class="form-group">
-                <label>6. レア度</label>
-                <input type="text" id="back5" value="" placeholder="例: ヒミツ">
-            </div>
+			<div class="form-group">
+				<label>6. レア度</label>
+				<div id="rarityStars" class="rarity-stars" role="group" aria-label="レア度">
+					<button type="button" class="rarity-star" data-rating="1" aria-label="星1つ">☆</button>
+					<button type="button" class="rarity-star" data-rating="2" aria-label="星2つ">☆</button>
+					<button type="button" class="rarity-star" data-rating="3" aria-label="星3つ">☆</button>
+					<button type="button" class="rarity-star" data-rating="4" aria-label="星4つ">☆</button>
+					<button type="button" class="rarity-star" data-rating="5" aria-label="星5つ">☆</button>
+				</div>
+				<input type="hidden" id="back5" value="">
+			</div>
         </div>
         <label>✨ 座右の銘</label><input type="text" id="backMotto" value="" placeholder="好きな言葉や目標など">
         <label>💭 一番の思い出</label><textarea id="backMemory" placeholder=""></textarea>
