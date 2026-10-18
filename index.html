@@ -279,6 +279,28 @@
         }
         .btn-cancel { background: #6c757d; }
         .btn-confirm { background: #28a745; }
+		
+		/* レア度の星評価の見た目を設定 */
+		.rarity-stars {
+		display: flex;
+		gap: 6px;
+		}
+		
+		/* 星ボタンの基本デザイン */
+		.rarity-star {
+		border: none;
+		background: none;
+		padding: 0;
+		font-size: 32px;
+		color: #FFD700;
+		cursor: pointer;
+		line-height: 1.2;
+		}
+		
+		/* 選択された星の色を設定 */
+		.rarity-star.active {
+		color: #FFD700;
+		}
     </style>
 </head>
 
