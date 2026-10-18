@@ -855,7 +855,13 @@ function drawBackCardForZeamigoods(ctx) {
 
     ctx.fillText("5. レア度", labelX, 1140);
     ctx.fillText("：", colonX, 1140);
-    ctx.fillText(document.getElementById('back5').value, valueX, 1140);
+	const rarity = Number(document.getElementById('back5').value);
+	const rarityText = '★'.repeat(rarity) + '☆'.repeat(5 - rarity);
+	
+	ctx.save();
+	ctx.fillStyle = '#FFD700';
+	ctx.fillText(rarityText, valueX, 1140);
+	ctx.restore();
     
     ctx.textAlign = "center";
     ctx.font = "bold 70px sans-serif";
