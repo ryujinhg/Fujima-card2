@@ -1353,6 +1353,33 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+	/* レア度の星評価を切り替える処理 */
+const rarityStars = document.getElementById('rarityStars');
+const rarityInput = document.getElementById('back5');
+
+if (rarityStars && rarityInput) {
+    const starButtons = rarityStars.querySelectorAll('.rarity-star');
+
+    // 星をクリックしたときの処理
+    starButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const rating = Number(button.dataset.rating);
+
+            // 選択した星の数を保存
+            rarityInput.value = rating;
+
+            // 選択した数まで星を塗る
+            starButtons.forEach((star) => {
+                const starRating = Number(star.dataset.rating);
+                const isActive = starRating <= rating;
+
+                star.textContent = isActive ? '★' : '☆';
+                star.classList.toggle('active', isActive);
+            });
+        });
+    });
+}
 </script>
 </body>
 </html>
