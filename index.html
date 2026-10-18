@@ -1209,7 +1209,7 @@ if (downloadFrontPsdBtn) {
         );
 
         const fileName =
-            rawName.toLowerCase().replace(/\s+/g, '_') + '_omote.png';
+            'Zeami_' + rawName.toLowerCase().replace(/\s+/g, '_') + '_omote.png';
 
         const link = document.createElement('a');
         link.href = outputCanvas.toDataURL('image/png');
@@ -1250,7 +1250,8 @@ if (downloadBackPsdBtn) {
         // PNGで保存
         const rawName = document.getElementById('backRomanName').value.trim();
         const fileName =
-            (rawName.toLowerCase().replace(/\s+/g, '_') || 'back') +
+			'Zeami_' +
+    		(rawName.toLowerCase().replace(/\s+/g, '_') || 'back') +
             '_ura.png';
 
         const a = document.createElement('a');
