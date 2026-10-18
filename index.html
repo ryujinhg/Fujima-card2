@@ -389,17 +389,17 @@
                 <input type="text" id="back2" value="" placeholder="例: 1994年7月5日">
             </div>
             <div class="form-group">
-                <label>4. 特技</label>
-                <input type="text" id="back3" value="" placeholder="例: これが得意">
+                <label>4. 特殊能力</label>
+                <input type="text" id="back3" value="" placeholder="例: これが僕の力だ">
             </div>
         </div>
         <div class="form-row">
             <div class="form-group">
                 <label>5. 推しキャラ</label>
-                <input type="text" id="back4" value="" placeholder="例: 推せる">
+                <input type="text" id="back4" value="" placeholder="例: 推せる～">
             </div>
             <div class="form-group">
-                <label>6. ヒミツ</label>
+                <label>6. レア度</label>
                 <input type="text" id="back5" value="" placeholder="例: ヒミツ">
             </div>
         </div>
@@ -734,7 +734,7 @@ function drawBackCard() {
     backCtx.fillText("：", colonX, 915);
     backCtx.fillText(document.getElementById('back2').value, valueX, 915);
 
-    backCtx.fillText("3. 特技", labelX, 990);
+    backCtx.fillText("3. 特殊能力", labelX, 990);
     backCtx.fillText("：", colonX, 990);
     backCtx.fillText(document.getElementById('back3').value, valueX, 990);
 
@@ -742,7 +742,7 @@ function drawBackCard() {
     backCtx.fillText("：", colonX, 1065);
     backCtx.fillText(document.getElementById('back4').value, valueX, 1065);
 
-    backCtx.fillText("5. ヒミツ", labelX, 1140);
+    backCtx.fillText("5. レア度", labelX, 1140);
     backCtx.fillText("：", colonX, 1140);
     backCtx.fillText(document.getElementById('back5').value, valueX, 1140);
     
@@ -816,7 +816,7 @@ function drawBackCardForZeamigoods(ctx) {
     ctx.fillText("：", colonX, 915);
     ctx.fillText(document.getElementById('back2').value, valueX, 915);
 
-    ctx.fillText("3. 特技", labelX, 990);
+    ctx.fillText("3. 特殊能力", labelX, 990);
     ctx.fillText("：", colonX, 990);
     ctx.fillText(document.getElementById('back3').value, valueX, 990);
 
@@ -824,7 +824,7 @@ function drawBackCardForZeamigoods(ctx) {
     ctx.fillText("：", colonX, 1065);
     ctx.fillText(document.getElementById('back4').value, valueX, 1065);
 
-    ctx.fillText("5. ヒミツ", labelX, 1140);
+    ctx.fillText("5. レア度", labelX, 1140);
     ctx.fillText("：", colonX, 1140);
     ctx.fillText(document.getElementById('back5').value, valueX, 1140);
     
