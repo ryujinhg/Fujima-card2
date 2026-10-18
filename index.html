@@ -773,7 +773,13 @@ function drawBackCard() {
 
     backCtx.fillText("5. レア度", labelX, 1140);
     backCtx.fillText("：", colonX, 1140);
-    backCtx.fillText(document.getElementById('back5').value, valueX, 1140);
+    // レア度を星で表示
+	const rarity = Number(document.getElementById('back5').value);
+	const rarityText = '★'.repeat(rarity) + '☆'.repeat(5 - rarity);
+	
+	backCtx.fillStyle = '#FFD700';
+	backCtx.fillText(rarityText, valueX, 1140);
+	backCtx.fillStyle = "#1a1a1a";
     
     backCtx.textAlign = "center";
     backCtx.font = "bold 70px sans-serif";
