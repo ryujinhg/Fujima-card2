@@ -60,8 +60,12 @@
         body:has(#guideScreen:not([style*="display: none"])) {
             overflow: auto !important;
         }
-		
-        
+		/* 入稿ガイド表示中は、上下中央揃えを解除する */
+		body:has(#guideScreen:not([style*="display: none"])) {
+		    align-items: flex-start;
+		    justify-content: flex-start;
+		}
+		        
         @media (max-width: 650px) { 
             .container { 
                 flex-direction: column; 
