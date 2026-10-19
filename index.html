@@ -318,6 +318,16 @@
 		.rarity-star.active {
 		color: #FFD700;
 		}
+
+/* ==========================================================
+   【入稿ガイド画面専用のPC向け設定】
+   ========================================================== */
+#guideScreen.container {
+    height: auto !important;          /* 96vhの固定を完全に解除する */
+    min-height: 100vh !important;     /* 最低でも画面の高さは確保する */
+    overflow-y: auto !important;      /* PCでも縦に長い中身をスクロールさせる */
+}
+		
     </style>
 </head>
 
