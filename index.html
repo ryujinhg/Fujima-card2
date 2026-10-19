@@ -143,8 +143,8 @@
         
 #menuScreen { flex-direction: column; align-items: center; overflow-y: auto; }
         
-        .menu-panel { 
-            width: 100%
+.menu-panel { 
+            width: 100%; /* ← 【修正】セミコロンを追加しました */
             max-width: 900px;
             
             /* height: 100vh; ← 削除する */
@@ -164,6 +164,13 @@
             padding: 40px 20px; /* 上下にゆとりを持たせる */
             box-sizing: border-box; 
         }
+
+        /* ▼ 【追加】このパネルの中にある画像がはみ出さないようにする設定 ▼ */
+        .menu-panel img {
+            max-width: 100%;
+            height: auto;
+        }
+
         .menu-panel .btn {
             max-width: 400px;
             margin: 0 auto; 
