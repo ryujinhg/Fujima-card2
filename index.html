@@ -47,16 +47,27 @@
         }
 
 		/* ==========================================================
-           【入稿ガイド画面専用のPC向け設定】
+           【入稿ガイド画面専用：上切れ防止＆完全スクロール設定】
            ========================================================== */
+        /* 1. ガイドの枠（container）を縦伸び・スクロール仕様にする */
         #guideScreen.container {
-            height: auto !important;          /* 96vhの固定を完全に解除する */
-            min-height: 100vh !important;     /* 最低でも画面の高さは確保する */
-            overflow-y: auto !important;      /* PCでも縦に長い中身をスクロールさせる */
-            margin: 20px auto;                /* 上下に余白をつけて中央配置 */
+            display: block !important;         /* flexによる中央寄せ＆上切れを完全に防ぐ */
+            height: auto !important;           /* 96vhの固定を解除 */
+            min-height: 100vh !important;      /* 画面いっぱいの高さを確保 */
+            overflow-y: auto !important;       /* 縦スクロールを許可 */
+            margin: 0 auto !important;         /* 画面中央に配置 */
+            padding: 20px !important;          /* 周りに適度な余白 */
         }
 
-        /* 画面全体のスクロールブロック（overflow: hidden）をガイド表示時だけ解除 */
+        /* 2. 中身のパネル（.menu-panel）の高さ固定やflex制限を解除 */
+        #guideScreen .menu-panel {
+            height: auto !important;
+            min-height: auto !important;
+            display: block !important;         /* 上から順に要素を素直に並べる */
+            margin: 0 auto !important;
+        }
+
+        /* 3. 画面全体のスクロール制御（ガイド表示中のみ全体スクロール可能にする） */
         body:has(#guideScreen:not([style*="display: none"])) {
             overflow: auto !important;
         }
