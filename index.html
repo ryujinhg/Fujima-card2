@@ -58,8 +58,7 @@
 
         /* 画面全体のスクロールブロック（overflow: hidden）をガイド表示時だけ解除 */
 		body:has(#guideScreen:not([style*="display: none"])) {
-		    overflow-x: hidden !important;
-		    overflow-y: hidden !important;
+		    overflow: auto !important;
 		}
 		/* 入稿ガイド表示中は、上下中央揃えを解除する */
 		body:has(#guideScreen:not([style*="display: none"])) {
