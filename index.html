@@ -50,16 +50,10 @@
            【入稿ガイド画面専用のPC向け設定】
            ========================================================== */
         #guideScreen.container {
-            height: auto !important;          /* 96vhの固定を解除 */
-            min-height: 100vh !important;     /* 最低でも画面の高さを確保 */
-            overflow-y: auto !important;      /* 縦スクロールを可能にする */
-            
-            /* ▼ 上部切れ防止のための重要設定 ▼ */
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: flex-start !important; /* 上詰めで配置（中央寄せ等による上切れを防止） */
-            align-items: center !important;
-            margin: 0 auto !important;
+            height: auto !important;          /* 96vhの固定を完全に解除する */
+            min-height: 100vh !important;     /* 最低でも画面の高さは確保する */
+            overflow-y: auto !important;      /* PCでも縦に長い中身をスクロールさせる */
+            margin: 20px auto;                /* 上下に余白をつけて中央配置 */
         }
 
         /* 画面全体のスクロールブロック（overflow: hidden）をガイド表示時だけ解除 */
