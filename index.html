@@ -77,7 +77,11 @@
                 overflow: auto; 
             } 
         }
-        
+		@media (max-width: 650px) {
+		body:has(#guideScreen:not([style*="display: none"])) {
+			overflow: hidden !important;
+			}
+		}
         .panel { 
             flex: 0.8; 
             display: flex; 
