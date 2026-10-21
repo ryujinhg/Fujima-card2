@@ -86,9 +86,13 @@
 		/* スマホ版：入稿ガイドの下部が隠れる問題への対策 */
 		@media (max-width: 650px) {
 		    #guideScreen.container {
+		        height: 100dvh !important;
+		        min-height: 0 !important;
 		        max-height: 100dvh;
-		        padding-bottom: 10px;
+		        margin: 0 auto !important;
+		        padding-bottom: 20px;
 		        box-sizing: border-box;
+		        overflow-y: auto !important;
 		    }
 		}
 	
