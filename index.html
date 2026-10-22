@@ -483,6 +483,7 @@
             <label class="color-picker-label">🖌️ フチ色: <input type="color" id="kanjiStrokeColorInput" value="#000000"></label>
         </div>
 		<label class="btn" id="frontFileInputLabel">選手の画像を追加する<input type="file" id="frontFileInput" accept="image/*"></label>
+		<button id="toggleRareCardBtn" class="btn">レアカードにする</button>
         <button id="downloadCombinedBtnFront" class="btn btn-main btn-combined-main" disabled>LAWSONシールL判用で保存する </button>
         <button id="downloadFrontPsdBtn" class="btn btn-psd" disabled>📦 Zeami_Goods用で表面を保存</button>        
         <div class="bottom-btn-group">
@@ -1473,7 +1474,24 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
+	
+	// --- レアカード設定 ---
+	let isRareCard = false;
+	const rareFrameImg = new Image();
+	rareFrameImg.src = "images/rare_card.png";
+	
+		// --- レアカード切り替え ---
+	const toggleRareCardBtn = document.getElementById('toggleRareCardBtn');
+		if (toggleRareCardBtn) {
+	    toggleRareCardBtn.addEventListener('click', () => {
+	        isRareCard = !isRareCard;
+		        toggleRareCardBtn.textContent = isRareCard
+	            ? '通常カードに戻す'
+	            : 'レアカードにする';
+		        drawFrontCard();
+	    });
+	}
+	
 	/* レア度の星評価を切り替える処理 */
 const rarityStars = document.getElementById('rarityStars');
 const rarityInput = document.getElementById('back5');
