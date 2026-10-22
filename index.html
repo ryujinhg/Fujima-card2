@@ -734,6 +734,15 @@ function drawFrontCard() {
         frontCtx.fillText(engText, textBaseX, 2200 - 100);
         frontCtx.restore();
     }
+	// --- レアカード枠を最前面に描画 ---
+    if (isRareCard && rareFrameImg.complete && rareFrameImg.naturalWidth > 0) {
+        frontCtx.drawImage(
+            rareFrameImg,
+            0, 0,
+            frontCanvas.width,
+            frontCanvas.height
+        );
+    }
 }
 
 function drawFrontCardForZeamigoods(ctx) {
