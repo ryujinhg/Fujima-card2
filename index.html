@@ -750,18 +750,33 @@ function drawFrontCard() {
     }
 
     // --- カードデザインを重ねて描画 ---
-    if (
-        (cardDesign === 'frame' || cardDesign === 'both') &&
-        rareFrameImg.complete &&
-        rareFrameImg.naturalWidth > 0
-    ) {
-        frontCtx.drawImage(
-            rareFrameImg,
-            0, 0,
-            frontCanvas.width,
-            frontCanvas.height
-        );
-    }
+	// 金の集中線
+		if (
+		    (cardDesign === 'rays' || cardDesign === 'both') &&
+		    goldRaysImg.complete &&
+		    goldRaysImg.naturalWidth > 0
+		) {
+		    frontCtx.drawImage(
+		        goldRaysImg,
+		        0, 0,
+		        frontCanvas.width,
+		        frontCanvas.height
+		    );
+		}
+	
+	// 金枠
+		if (
+			    (cardDesign === 'frame' || cardDesign === 'both') &&
+			    rareFrameImg.complete &&
+			    rareFrameImg.naturalWidth > 0
+			) {
+			    frontCtx.drawImage(
+			        rareFrameImg,
+			        0, 0,
+			        frontCanvas.width,
+			        frontCanvas.height
+			    );
+		}
 }
 
 function drawFrontCardForZeamigoods(ctx) {
