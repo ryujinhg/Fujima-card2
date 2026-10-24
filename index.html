@@ -695,6 +695,20 @@ function drawFrontCard() {
         frontCtx.drawImage(frontFaceImg, 0, 0, 1575, 2200);
     }
 
+	// --- 金の集中線を背景側に描画 ---
+	if (
+	    (cardDesign === 'rays' || cardDesign === 'both') &&
+	    goldRaysImg.complete &&
+	    goldRaysImg.naturalWidth > 0
+	) {
+	    frontCtx.drawImage(
+	        goldRaysImg,
+	        0, 0,
+	        frontCanvas.width,
+	        frontCanvas.height
+	    );
+	}
+
     const fontSize = 270;
     const nameText = inputName.value.trim();
     if (nameText) {
@@ -750,20 +764,6 @@ function drawFrontCard() {
     }
 
     // --- カードデザインを重ねて描画 ---
-	// 金の集中線
-		if (
-		    (cardDesign === 'rays' || cardDesign === 'both') &&
-		    goldRaysImg.complete &&
-		    goldRaysImg.naturalWidth > 0
-		) {
-		    frontCtx.drawImage(
-		        goldRaysImg,
-		        0, 0,
-		        frontCanvas.width,
-		        frontCanvas.height
-		    );
-		}
-	
 	// 金枠
 		if (
 			    (cardDesign === 'frame' || cardDesign === 'both') &&
