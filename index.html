@@ -1495,22 +1495,30 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 	
-	// --- レアカード設定 ---
-	let isRareCard = false;
-	const rareFrameImg = new Image();
-	rareFrameImg.src = "images/rare_card.png";
-	
-		// --- レアカード切り替え ---
-	const toggleRareCardBtn = document.getElementById('toggleRareCardBtn');
-		if (toggleRareCardBtn) {
-	    toggleRareCardBtn.addEventListener('click', () => {
-	        isRareCard = !isRareCard;
-		        toggleRareCardBtn.textContent = isRareCard
-	            ? '通常カードに戻す'
-	            : 'レアカードにする';
-		        drawFrontCard();
-	    });
-	}
+ // --- カードデザイン設定 ---
+let cardDesign = 'normal';
+
+const rareFrameImg = new Image();
+rareFrameImg.src = "images/rare_card.png";
+
+// --- デザイン選択メニュー ---
+const toggleRareCardBtn = document.getElementById('toggleRareCardBtn');
+const cardDesignMenu = document.getElementById('cardDesignMenu');
+
+if (toggleRareCardBtn && cardDesignMenu) {
+    toggleRareCardBtn.addEventListener('click', () => {
+        const isOpen = cardDesignMenu.style.display !== 'none';
+        cardDesignMenu.style.display = isOpen ? 'none' : 'block';
+    });
+
+    document.querySelectorAll('.design-option').forEach(option => {
+        option.addEventListener('click', () => {
+            cardDesign = option.dataset.design;
+            cardDesignMenu.style.display = 'none';
+            drawFrontCard();
+        });
+    });
+}
 	
 	/* レア度の星評価を切り替える処理 */
 const rarityStars = document.getElementById('rarityStars');
