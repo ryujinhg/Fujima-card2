@@ -483,7 +483,18 @@
             <label class="color-picker-label">🖌️ フチ色: <input type="color" id="kanjiStrokeColorInput" value="#000000"></label>
         </div>
 		<label class="btn" id="frontFileInputLabel">選手の画像を追加する<input type="file" id="frontFileInput" accept="image/*"></label>
-		<button id="toggleRareCardBtn" class="btn">レアカードにする</button>
+
+		
+		<div class="design-selector">
+	    <button id="toggleRareCardBtn" class="btn">カードをデザインする ▼</button>
+			    <div id="cardDesignMenu" class="design-menu" style="display: none;">
+		        <button type="button" class="design-option" data-design="normal">通常カード</button>
+		        <button type="button" class="design-option" data-design="frame">金の枠</button>
+		        <button type="button" class="design-option" data-design="rays">集中線</button>
+		        <button type="button" class="design-option" data-design="both">金の枠＋集中線</button>
+		    </div>
+		</div>
+		
         <button id="downloadCombinedBtnFront" class="btn btn-main btn-combined-main" disabled>LAWSONシールL判用で保存する </button>
         <button id="downloadFrontPsdBtn" class="btn btn-psd" disabled>📦 Zeami_Goods用で表面を保存</button>        
         <div class="bottom-btn-group">
