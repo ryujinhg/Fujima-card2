@@ -684,69 +684,77 @@ logoInput.addEventListener('change', (e) => {
         reader.readAsDataURL(e.target.files[0]);
     }
 });
-
+// --- 表面カードの描画処理 --- 
 function drawFrontCard() {
     frontCanvas.width = 1575;
     frontCanvas.height = 2200;
     frontCtx.fillStyle = "#ffffff";
     frontCtx.fillRect(0, 0, frontCanvas.width, frontCanvas.height);
-    
+
     if (frontFaceImg) {
-        frontCtx.drawImage(frontFaceImg, 0, 0, 1575, 2200); 
+        frontCtx.drawImage(frontFaceImg, 0, 0, 1575, 2200);
     }
-    
-    const fontSize = 270; 
+
+    const fontSize = 270;
     const nameText = inputName.value.trim();
     if (nameText) {
         frontCtx.save();
-        frontCtx.font = `${fontSize}px Black Ops One, sans-serif`; 
-        frontCtx.fillStyle = "#facc15";  
-        frontCtx.shadowColor = "rgba(0, 0, 0, 0.7)"; frontCtx.shadowBlur = 15;
-        frontCtx.shadowOffsetX = 5; frontCtx.shadowOffsetY = 5;
-        frontCtx.translate(80, 100); 
-        frontCtx.rotate(Math.PI / 2); 
-        frontCtx.fillText(nameText, 0, 0, 1900); 
+        frontCtx.font = `${fontSize}px Black Ops One, sans-serif`;
+        frontCtx.fillStyle = "#facc15";
+        frontCtx.shadowColor = "rgba(0, 0, 0, 0.7)";
+        frontCtx.shadowBlur = 15;
+        frontCtx.shadowOffsetX = 5;
+        frontCtx.shadowOffsetY = 5;
+        frontCtx.translate(80, 100);
+        frontCtx.rotate(Math.PI / 2);
+        frontCtx.fillText(nameText, 0, 0, 1900);
         frontCtx.restore();
     }
-    
+
     let logoSize = 250;
-    let logoX = 1575 - logoSize - 66; 
-    let logoY = 2200 - logoSize - 92; 
+    let logoX = 1575 - logoSize - 66;
+    let logoY = 2200 - logoSize - 92;
     if (hasLogo && logoImg && logoImg.complete) {
         frontCtx.save();
-        frontCtx.shadowColor = "#ffffff"; frontCtx.shadowBlur = 20;
+        frontCtx.shadowColor = "#ffffff";
+        frontCtx.shadowBlur = 20;
         frontCtx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
         frontCtx.restore();
     }
-    
-    let textBaseX = hasLogo ? logoX - 40 : 1525; 
+
+    let textBaseX = hasLogo ? logoX - 40 : 1525;
     const kanjiText = inputTeamKanji.value.trim();
     if (kanjiText) {
         frontCtx.save();
-        frontCtx.font = "italic bold 80px sans-serif"; 
-        frontCtx.textAlign = "right"; 
+        frontCtx.font = "italic bold 80px sans-serif";
+        frontCtx.textAlign = "right";
         frontCtx.strokeStyle = kanjiStrokeColorInput.value;
         frontCtx.lineWidth = 8;
         frontCtx.strokeText(kanjiText, textBaseX, 2200 - 160);
-        frontCtx.fillStyle = kanjiColorInput.value; 
+        frontCtx.fillStyle = kanjiColorInput.value;
         frontCtx.fillText(kanjiText, textBaseX, 2200 - 160);
         frontCtx.restore();
     }
-    
-    const engText = inputTeamEng.value.trim(); 
+
+    const engText = inputTeamEng.value.trim();
     if (engText) {
         frontCtx.save();
-        frontCtx.font = "italic bold 35px sans-serif"; 
-        frontCtx.textAlign = "right"; 
+        frontCtx.font = "italic bold 35px sans-serif";
+        frontCtx.textAlign = "right";
         frontCtx.strokeStyle = kanjiStrokeColorInput.value;
         frontCtx.lineWidth = 4;
         frontCtx.strokeText(engText, textBaseX, 2200 - 100);
-        frontCtx.fillStyle = kanjiColorInput.value; 
+        frontCtx.fillStyle = kanjiColorInput.value;
         frontCtx.fillText(engText, textBaseX, 2200 - 100);
         frontCtx.restore();
     }
-	// --- レアカード枠を最前面に描画 ---
-    if (isRareCard && rareFrameImg.complete && rareFrameImg.naturalWidth > 0) {
+
+    // --- カードデザインを重ねて描画 ---
+    if (
+        (cardDesign === 'frame' || cardDesign === 'both') &&
+        rareFrameImg.complete &&
+        rareFrameImg.naturalWidth > 0
+    ) {
         frontCtx.drawImage(
             rareFrameImg,
             0, 0,
