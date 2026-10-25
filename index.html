@@ -1338,6 +1338,53 @@ function saveFrontForZeamigoods() {
 const sharedTemplateImg = new Image();
 sharedTemplateImg.src = "images/zeamigoods-template.png";
 
+//ｉＰｈｏｎｅ用の追加処理
+async function saveZeamiPng(canvas, fileName) {
+    const isIOS =
+        /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' &&
+         navigator.maxTouchPoints > 1);
+
+    // iPhoneでは共有メニューからPNGを保存する
+    if (isIOS && navigator.share && navigator.canShare) {
+        try {
+            const blob = await new Promise(resolve => {
+                canvas.toBlob(resolve, 'image/png');
+            });
+
+            if (!blob) {
+                alert('PNG画像を作成できませんでした。');
+                return;
+            }
+
+            const file = new File([blob], fileName, {
+                type: 'image/png'
+            });
+
+            if (navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                    title: fileName
+                });
+                return;
+            }
+        } catch (error) {
+            // ユーザーが共有メニューを閉じた場合は何もしない
+            if (error.name === 'AbortError') return;
+
+            console.error('PNG共有エラー:', error);
+        }
+    }
+
+    // Androidなどでは従来のダウンロード方式を使う
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+}
+	
 // 表面ZEAMI Goods用PNG保存
 const downloadFrontPsdBtn = document.getElementById('downloadFrontPsdBtn');
 
@@ -1378,10 +1425,7 @@ if (downloadFrontPsdBtn) {
         const fileName =
             'Zeami_' + rawName.toLowerCase().replace(/\s+/g, '_') + '_omote.png';
 
-        const link = document.createElement('a');
-        link.href = outputCanvas.toDataURL('image/png');
-        link.download = fileName;
-        link.click();
+        saveZeamiPng(outputCanvas, fileName);
     });
 }
 	
@@ -1421,10 +1465,7 @@ if (downloadBackPsdBtn) {
     		(rawName.toLowerCase().replace(/\s+/g, '_') || 'back') +
             '_ura.png';
 
-        const a = document.createElement('a');
-        a.href = outputCanvas.toDataURL('image/png');
-        a.download = fileName;
-        a.click();
+        saveZeamiPng(outputCanvas, fileName);
     });
 }
 
