@@ -783,6 +783,16 @@ function drawFrontCardForZeamigoods(ctx) {
     if (frontFaceImg) {
         ctx.drawImage(frontFaceImg, 0, 0, 1575, 2200); 
     }
+
+    // --- 金の集中線を背景側に描画 ---
+    if (
+        (cardDesign === 'rays' || cardDesign === 'both') &&
+        goldRaysImg.complete &&
+        goldRaysImg.naturalWidth > 0
+    ) {
+        ctx.drawImage(goldRaysImg, 0, 0, 1575, 2200);
+    }
+	
     const fontSize = 270; 
     const nameText = inputName.value.trim();
     if (nameText) {
@@ -830,6 +840,16 @@ function drawFrontCardForZeamigoods(ctx) {
         ctx.fillText(engText, textBaseX, 2200 - 100);
         ctx.restore();
     }
+
+    // --- 金枠を最前面に描画 ---
+    if (
+        (cardDesign === 'frame' || cardDesign === 'both') &&
+        rareFrameImg.complete &&
+        rareFrameImg.naturalWidth > 0
+    ) {
+        ctx.drawImage(rareFrameImg, 0, 0, 1575, 2200);
+    }
+	
 }
 
 // --- 裏面用の変数・処理群 ---
